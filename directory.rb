@@ -14,7 +14,7 @@ def input_students
     name = gets.chomp
   end
   # return the array of students
-  students
+students
 end 
 
 def print_header
@@ -24,7 +24,9 @@ end
 
 def print(students)
   students.each_with_index do |student, index|
-  puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    # if student[:name][0] == 'f'
+    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    # end
   end
 end
 
