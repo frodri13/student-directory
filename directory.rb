@@ -63,18 +63,27 @@ def print_header
 end
 
 def print(students)
+  # count = 0
+  # while count < students.count do
+  #   name = students[count][:name].to_s
+  #   cohort = students[count][:cohort].to_s
+  #   age = students[count][:age].to_s
+  #   country = students[count][:country].to_s
+  #   hobby = students[count][:hobby].to_s
+
+  #   puts "#{count += 1}. #{name} (#{cohort} cohort)".center(70)
+  #   puts "Age: #{age}. Country of origin: #{country}. Hobby: #{hobby}".center(70)
+
+  # end
+  puts "Please select the cohort you would like to print:".center(70)
+  cohort = gets.chomp
   count = 0
-  while count < students.count do
-    name = students[count][:name].to_s
-    cohort = students[count][:cohort].to_s
-    age = students[count][:age].to_s
-    country = students[count][:country].to_s
-    hobby = students[count][:hobby].to_s
 
-    puts "#{count += 1}. #{name} (#{cohort} cohort)".center(70)
-    puts "Age: #{age}. Country of origin: #{country}. Hobby: #{hobby}".center(70)
-
-  end
+  students.map {|hash|
+      if hash[:cohort].include?(cohort) == true
+      puts "#{count += 1}. Name: #{hash[:name]}. Age: #{hash[:age]}. Country: #{hash[:country]}. Hobby #{hash[:hobby]}.".center(70)
+      end
+    }
 end
 
 def print_footer(student)
