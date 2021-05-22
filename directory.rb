@@ -4,7 +4,7 @@ def input_students
   puts "Please enter the names of the students.".center(70)
   puts "To finish, just hit the return key twice".center(68)
   # get the first name. Alternative to chomp: to_s.slice!(/\w+/)
-  name = gets.chomp
+  name = STDIN.gets.chomp
   # if name is empty, the program will stop and it will put the following message and stop.
   if name.empty?
     puts "THE HEROES ARE WINNING! OUR SCHOOL IS EMPTY!! NO STUDENTS THIS YEAR!!!".center(75)
@@ -13,13 +13,13 @@ def input_students
   # while the name is not empty, repeat this code
   while !name.empty? do
     puts "Which cohort will they be attending?".center(70)
-    cohort = gets.chomp
+    cohort = STDIN.gets.chomp
     cohort = "2021" if cohort.length == 0
     puts "What's their age?".center(70)
-    age = gets.chomp
+    age = STDIN.gets.chomp
     until age.to_i > 0
       puts "Please enter a number".center(70)
-      age = gets.chomp
+      age = STDIN.gets.chomp
         if age.to_i > 0 && age.to_i < 18
           puts "You're too young to study at the Villains Academy. Please come back when you're older.".center(70)
           exit
@@ -27,25 +27,25 @@ def input_students
     end
   
     puts "Birth country?".center(70)
-    country = gets.chomp
+    country = STDIN.gets.chomp
     puts "What's their hobby?".center(70)
-    hobby = gets.chomp
+    hobby = STDIN.gets.chomp
     # all variables are paired with a symbol and sent as an array 
     @students << {name: name, cohort: cohort, age: age, country: country, hobby: hobby}
 
 
     puts "Are you happy with the information you've provided us? if you would like to edit it, please type 'no'.".center(70)
-    happy = gets.chomp
+    happy = STDIN.gets.chomp
     
     while happy == 'no' do
       puts "Type the category you would like to change [name, cohort, age, country, hobby]:".center(70)
-      category = gets.chomp
+      category = STDIN.gets.chomp
       puts "Please retype your data:".center(70)
-      change = gets.chomp
+      change = STDIN.gets.chomp
 
       @students[@students.count - 1][category.to_sym] = change
       puts "Would you like to edit another category?".center(70)
-      answer = gets.chomp
+      answer = STDIN.gets.chomp
       break if answer == 'no'
 
     end
@@ -57,7 +57,7 @@ def input_students
     end
     # get another name from the user
     puts "What's the next student's name?".center(70)
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
   # return the array of students
 @students
@@ -130,8 +130,8 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age, country, hobby = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, age: age, country: country, hobby: hobby}
@@ -139,4 +139,17 @@ def load_students
   file.close
 end
 
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}."
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
+end
+
+try_load_students
 interactive_menu
