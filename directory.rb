@@ -68,24 +68,17 @@ def print_header
   puts "-------------".center(70)
 end
 
-def print_students_list(students)
-  # add functionality to print all
-  puts "Please select the cohort you would like to print:".center(70)
-  cohort = gets.chomp
-  count = 0
-
-  students.map {|hash|
-      if hash[:cohort].include?(cohort) == true
-      puts "#{count += 1}. Name: #{hash[:name]}. Age: #{hash[:age]}. Country: #{hash[:country]}. Hobby #{hash[:hobby]}.".center(70)
-      end
-    }
+def print_students_list
+  @students.each do|student|
+    puts "Name: #{student[:name]}. Cohort: #{student[:cohort]} Age: #{student[:age]}. Country: #{student[:country]}. Hobby: #{student[:hobby]}.".center(70)
+  end
 end
 
-def print_footer(student)
-  if student.count < 2
-    puts "Overall, we have #{student.count} great student".center(70) 
+def print_footer
+  if @students.count < 2
+    puts "Overall, we have #{@students.count} great student".center(70) 
   else
-    puts "Overall, we have #{student.count} great students".center(70)
+    puts "Overall, we have #{@students.count} great students".center(70)
   end
 end
 
@@ -93,13 +86,14 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
   puts "9. Exit" 
 end
 
 def show_students
   print_header
-  print_students_list(@students)
-  print_footer(@students)
+  print_students_list
+  print_footer
 end
 
 def process(selection)
@@ -110,6 +104,8 @@ def process(selection)
     show_students
   when "3"
     save_students
+  when "4"
+    load_students
   when "9"
     exit
   end
@@ -127,9 +123,18 @@ def save_students
   file = File.open("students.csv", "w")
   # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], student[:cohort], student[:age], student[:country], student[:hobby]]
     csv_line = student_data.join(",")
     file.puts csv_line
+  end
+  file.close
+end
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort, age, country, hobby = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym, age: age, country: country, hobby: hobby}
   end
   file.close
 end
