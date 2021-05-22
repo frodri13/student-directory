@@ -3,8 +3,13 @@ def input_students
   puts "To finish, just hit the return key twice".center(68)
   # create an empty array
   students = []
-  # get the first name
-  name = gets.to_s.slice!(/\w+/)
+  # get the first name. Alternative to chomp: to_s.slice!(/\w+/)
+  name = gets.chomp
+  # if name is empty, the program will stop and it will put the following message and stop.
+  if name.empty?
+    puts "THE HEROES ARE WINNING! OUR SCHOOL IS EMPTY!! NO STUDENTS THIS YEAR!!!".center(75)
+    exit
+  end
   # while the name is not empty, repeat this code
   while !name.empty? do
     puts "Which cohort will they be attending?".center(70)
@@ -20,6 +25,7 @@ def input_students
           exit
         end
     end
+  
     puts "Birth country?".center(70)
     country = gets.chomp
     puts "What's their hobby?".center(70)
