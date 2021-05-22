@@ -4,7 +4,7 @@ def input_students
   # create an empty array
   students = []
   # get the first name
-  name = gets.chomp
+  name = gets.to_s.slice!(/\w+/)
   # while the name is not empty, repeat this code
   while !name.empty? do
     puts "Which cohort will they be attending?".center(70)
