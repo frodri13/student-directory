@@ -140,7 +140,10 @@ end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
+  if filename.nil? # get out of the method if it isn't given
+    load_students
+    return
+  end
   if File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}."
@@ -175,6 +178,4 @@ end
 try_load_students
 interactive_menu
 
-# After we added the code to load the students from file, we ended up with adding the students to @students in two places.
-# The lines in load_students() and input_students() are almost the same. 
-# This violates the DRY (Don't Repeat Yourself) principle. How can you extract them into a method to fix this problem?
+ 
