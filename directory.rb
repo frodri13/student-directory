@@ -118,8 +118,15 @@ def show_students
 end
 # 3. Save students:
 def save_students
+  puts "Please type the name of the file as you would like to save it."
+  choice = gets.chomp
+
+  if !choice.include?('.csv')
+    choice + '.csv'
+  end
   # open the file for writing
-  file = File.open("students.csv", "w")
+
+  file = File.open(choice, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:age], student[:country], student[:hobby]]
@@ -129,8 +136,11 @@ def save_students
   file.close
 end
 # 4. Load students:
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
+def load_students
+  puts "Please type the file that you would like to upload."
+  choice = gets.chomp
+  choice = "students.csv" if choice.length < 4
+  file = File.open(choice, "r")
   file.readlines.each do |line|
     @name, @cohort, @age, @country, @hobby = line.chomp.split(',')
     students_hash_to_array
@@ -154,6 +164,9 @@ def try_load_students
 end
 # This method describes every functionality of the print_menu
 def process(selection)
+  
+  feedback(selection)
+  
   case selection
   when "1"
     input_students
@@ -165,6 +178,18 @@ def process(selection)
     load_students
   when "9"
     exit
+  end
+end
+
+# Feedback messaging to the user
+
+def feedback(response)
+  if response.to_i >= 1 || response.to_i <= 9
+    puts "Your request has been successful".center(70)
+    puts ""
+  else
+    puts "Please select one of the options".center(70)
+    puts ""
   end
 end
 # print_menu and process are put in a continuous loop:
